@@ -1,11 +1,11 @@
 {
-  "name": "file-manager",
+  "name": "crud-file-server",
   "version": "1.2.0",
-  "description": "Projeto do 4 bimestre de Sistemas Operacionais",
+  "description": "Projeto de SO",
   "bin": {
-    "crud-file-server": "./bin/file-manager"
+    "crud-file-server": "./bin/crud-file-server"
   },
-  "main": "./file-manager.js",
+  "main": "./crud-file-server.js",
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/wellson/file-manager"
@@ -24,5 +24,5 @@
   "engine": {
     "node": ">=0.8.1"
   },
-  "author": "Anderson Makino"
+  "author": ""
 }

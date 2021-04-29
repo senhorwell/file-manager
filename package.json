@@ -1,0 +1,28 @@
+{
+  "name": "file-manager",
+  "version": "1.2.0",
+  "description": "Projeto do 4 bimestre de Sistemas Operacionais",
+  "bin": {
+    "crud-file-server": "./bin/file-manager"
+  },
+  "main": "./file-manager.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/wellson/file-manager"
+  },
+  "keywords": [
+    "static",
+    "file",
+    "fs",
+    "http"
+  ],
+  "dependencies": {
+    "optimist": "0.3.4",
+    "mime": "2.3.1"
+  },
+  "license": "unlicense",
+  "engine": {
+    "node": ">=0.8.1"
+  },
+  "author": "Anderson Makino"
+}

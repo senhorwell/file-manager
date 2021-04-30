@@ -10,14 +10,14 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 
 	var writeError = function (err, code) { 
 		code = code || 500;
-		console.log('Error ' + code + ': ' + err);
+		console.log('Erro ' + code + ': ' + err);
 
 		try {			
 			res.statusCode = code;
 			res.setHeader('Content-Type', 'application/json');
 			res.end(JSON.stringify(err));	
 		} catch(resErr) {
-			console.log('failed to write error to response: ' + resErr);
+			console.log('Erro: ' + resErr);
 		}
 	};
 
@@ -30,8 +30,8 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 	if(url[0] === '/') { url = url.slice(1, url.length);  }
 
 	if(vpath && url.indexOf(vpath) != 0) {
-		console.log('url does not begin with vpath');
-		throw 'url [' + url + '] does not begin with vpath [' + vpath + ']';
+		console.log('Erro ao inserir vpath');
+		throw 'url [' + url + '] erro no vpath [' + vpath + ']';
 	}
 
 	if(req.method != 'HEAD') {
@@ -43,7 +43,7 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 	
 	try {
 		if(readOnly && req.method != 'GET') {
-			writeError(req.method + ' forbidden on this resource', 403);
+			writeError(req.method + ' Erro', 403);
 		} else {
 			switch(req.method) {
 				case 'HEAD':
@@ -85,14 +85,14 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 							else {
 								if(stats.isDirectory()) {
 									res.setHeader('Last-Modified', stats.mtime);							
-									res.setHeader("Expires", "Sat, 01 Jan 2000 00:00:00 GMT");
+									res.setHeader("Expires", "Sat, 01 Jan 2020 00:00:00 GMT");
 									res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
 									res.setHeader("Cache-Control", "post-check=0, pre-check=0");
 									res.setHeader("Pragma", "no-cache");
 									console.log('reading directory ' + relativePath);
 									fs.readdir(relativePath, function(err, files) {
 										if(err) { 
-											console.log('writeError');
+											console.log('Error');
 											writeError(err); 
 										}
 										else {
@@ -138,7 +138,7 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 										}
 									});
 								} else {
-									console.log('reading file ' + relativePath);
+									console.log('Lendo arquivo ' + relativePath);
 									if(query.type == 'json' || query.dir == 'json') {
 										var type = 'application/json';
 										res.setHeader('Content-Type', type);
@@ -168,7 +168,7 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 					}
 					return;
 				case 'PUT':
-					console.log('writing ' + relativePath);
+					console.log('Escrevendo ' + relativePath);
 					var stream = fs.createWriteStream(relativePath);		
 					stream.ok = true;
 					req.pipe(stream);
@@ -184,16 +184,16 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 					return;
 				case 'POST':
 					if(query.rename) {
-						console.log('rename: ' + relativePath);
+						console.log('Renomear: ' + relativePath);
 						query.rename = cleanUrl(query.rename);
 						if(vpath) { 
 							if(query.rename.indexOf('/' + vpath + '/') == 0) { 
 								query.rename = query.rename.slice(vpath.length + 2, query.rename.length);
 							} else {
-								throw 'renamed url [' + query.rename + '] does not begin with vpath [' + vpath + ']';
+								throw 'url [' + query.rename + '] erro no vpath [' + vpath + ']';
 							}
 						} 
-						console.log('renaming ' + relativePath + ' to ' + path + query.rename);
+						console.log('Renomeando de ' + relativePath + ' para ' + path + query.rename);
 						fs.rename(relativePath, path + query.rename, function(err) {
 							if(err) { writeError(err); } 
 							else {
@@ -201,7 +201,7 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 							}
 						});
 					} else if(query.create == 'directory') {
-						console.log('creating directory ' + relativePath);
+						console.log('Criando pasta ' + relativePath);
 						fs.mkdir(relativePath, 0777, function(err) { 
 							if(err) { writeError(err); } 
 							else {
@@ -209,8 +209,8 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 							}
 						});
 					} else {
-						console.log('relativePath: ' + relativePath);
-						writeError('valid queries are ' + url + '?rename=[new name] or ' + url + '?create=directory');
+						console.log('Path: ' + relativePath);
+						writeError(url + '?rename=[nome] ou ' + url + '?create=pasta');
 					}
 					return;
 				case 'DELETE':			
@@ -218,7 +218,7 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 						if(err) { writeError(err); } 
 						else {
 							if(stats.isDirectory()) {
-								console.log('deleting directory ' + relativePath);
+								console.log('Deletando pasta ' + relativePath);
 								fs.rmdir(relativePath, function(err) {
 									if(err) { writeError(err); }
 									else { 
@@ -226,7 +226,7 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 									}
 								});
 							} else {
-								console.log('deleting file ' + relativePath);
+								console.log('Deletando arquivo ' + relativePath);
 								fs.unlink(relativePath, function(err) {
 									if(err) { writeError(err); }
 									else { 
@@ -238,12 +238,12 @@ exports.handleRequest = function(vpath, path, req, res, readOnly, logHeadRequest
 					});			
 					return;
 				default:
-					console.log('unsupported: ' + relativePath);				
-					writeError('Method ' + method + ' not allowed', 405);
+					console.log('Nao suportado: ' + relativePath);				
+					writeError('Metodo ' + method + ' nao suportado', 405);
 					return;
 			}
 		}
 	} catch(err) { 
-		writeError('unhandled error: ' + err);
+		writeError('error: ' + err);
 	}
 };

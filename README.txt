@@ -1,3 +1,6 @@
+Nomes: Anderson Yoshio Makino
+	   Wellington Luiz da Silva Junior
+
 Esse projeto requer o node.js
 
 Para executar esse projeto devem ser seguidos os seguintes passos no cmd:

@@ -1,9 +1,23 @@
+<?php
+$path = "arquivos";
+?>
 <html>
 	<head>
 		<title>Trabalho de SO</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" ></script>
 	</head>
 	<body>
+		<h1>Lista de Arquivos do diretório <strong> '<?php echo $path ?>' </strong>:<br /></h1>
+        <ul>
+        <?php
+            $diretorio = dir($path);
+
+            while($arquivo = $diretorio -> read()){
+            echo "<a href='http://127.0.0.1:8000/gerenciador.php/".$path."/".$arquivo."'>".$arquivo."</a><br />";
+            }
+            $diretorio -> close();
+        ?>
+        </ul>
 		<fieldset>
 			<p><strong>Ler arquivo ou pasta</strong></p>
 			<div>
